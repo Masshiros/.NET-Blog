@@ -28,7 +28,7 @@ namespace Blog.Core.Domain.Content
         [MaxLength(250)]
         public string? Thumbnail { get; set; }
         public string? Content { get; set; }
-        public Guid OwnerUserId { get; set; }
+        public Guid AuthorUserId { get; set; }
         public DateTime DateCreated { get; set; }
     }
 }
