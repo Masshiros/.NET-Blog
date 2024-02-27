@@ -16,7 +16,7 @@ namespace Blog.Core.Domain.Content
         public DateTime DateCreated { get; set; }
         [MaxLength(500)]
         public string? Note { get; set; }
-        public Guid UsertId { get; set; }
+        public Guid UserId { get; set; }
         
     }
 }
