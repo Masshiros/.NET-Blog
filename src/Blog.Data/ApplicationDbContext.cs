@@ -40,29 +40,29 @@ namespace Blog.Data
 
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
-        {
-            #region Track added item and set DateCreated
-            var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Added ||  e.State == EntityState.Modified);
-            foreach (var entry in entries)
-            {
-                var dateCreatedProp = entry.Entity.GetType().GetProperty("DateCreated");
-                if (entry.State == EntityState.Added && dateCreatedProp != null)
-                {
-                    dateCreatedProp.SetValue(entry.Entity, DateTime.Now);
-                }
-                var dateModifiedProp = entry.Entity.GetType().GetProperty("DateModified");
-                if (entry.State == EntityState.Modified && dateModifiedProp != null)
-                {
-                    dateModifiedProp.SetValue(entry.Entity, DateTime.Now);
-                }
-            }
+        //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        //{
+        //    #region Track added item and set DateCreated
+        //    var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Added ||  e.State == EntityState.Modified);
+        //    foreach (var entry in entries)
+        //    {
+        //        var dateCreatedProp = entry.Entity.GetType().GetProperty("DateCreated");
+        //        if (entry.State == EntityState.Added && dateCreatedProp != null)
+        //        {
+        //            dateCreatedProp.SetValue(entry.Entity, DateTime.Now);
+        //        }
+        //        var dateModifiedProp = entry.Entity.GetType().GetProperty("DateModified");
+        //        if (entry.State == EntityState.Modified && dateModifiedProp != null)
+        //        {
+        //            dateModifiedProp.SetValue(entry.Entity, DateTime.Now);
+        //        }
+        //    }
 
-            return base.SaveChangesAsync(cancellationToken);
+        //    return base.SaveChangesAsync(cancellationToken);
 
 
-            #endregion
+        //    #endregion
 
-        }
+        //}
     }
 }
