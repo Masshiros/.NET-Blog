@@ -1,13 +1,15 @@
 using Blog.Api;
 using Blog.Core.Domain.Identity;
+using Blog.Core.SeedWorks;
 using Blog.Data;
+using Blog.Data.SeedWorks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
-// Add services to the container.
+
 
 // Config DbContext and ASP.net core Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
@@ -33,7 +35,9 @@ builder.Services.Configure<IdentityOptions>(options =>
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 });
-
+// Add services to the container.
+builder.Services.AddScoped(typeof(IRepository<,>),typeof(BaseRepository<,>));
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
