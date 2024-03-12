@@ -1,4 +1,7 @@
-﻿using Blog.Core.SeedWorks;
+﻿using AutoMapper;
+using Blog.Core.Repositories;
+using Blog.Core.SeedWorks;
+using Blog.Data.Repositories;
 
 namespace Blog.Data.SeedWorks
 {
@@ -6,9 +9,11 @@ namespace Blog.Data.SeedWorks
     {
         private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public IPostRepository Posts { get; set; }
+        public UnitOfWork(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            Posts = new PostRepository(context,mapper);
         }
 
         public async Task<int> CompleteAsync()
@@ -20,5 +25,6 @@ namespace Blog.Data.SeedWorks
         {
             _context.Dispose();
         }
+
     }
 }
