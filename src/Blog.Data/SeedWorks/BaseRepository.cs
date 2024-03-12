@@ -9,11 +9,12 @@ namespace Blog.Data.SeedWorks
     {
        
         private readonly DbSet<T> _dbSet;
-
+        protected readonly ApplicationDbContext _context;
         public BaseRepository(ApplicationDbContext context)
         {
             
             _dbSet = context.Set<T>();
+            _context = context;
         }
         public void Add(T entity)
         {
