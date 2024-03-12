@@ -1,10 +1,9 @@
 using Blog.Api;
+using Blog.Api.Filters;
 using Blog.Core.Domain.Identity;
 using Blog.Core.Models.Content;
-using Blog.Core.Repositories;
 using Blog.Core.SeedWorks;
 using Blog.Data;
-using Blog.Data.Repositories;
 using Blog.Data.SeedWorks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,27 +44,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped(typeof(IRepository<,>),typeof(BaseRepository<,>));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 // Business Services and repositories
-var concreteServices = typeof(PostRepository).Assembly.GetTypes()
-    .Where(x => x.GetInterfaces().Any(i => i.Name == typeof(IRepository<,>).Name)
-                && !x.IsAbstract
-                && x.IsClass
-                && !x.IsGenericType);
-
-foreach (var concreteService in concreteServices)
-{
-    var allInterfaces = concreteService.GetInterfaces();
-
-    var directInterface =
-        allInterfaces
-            .Except(allInterfaces
-                .SelectMany(t => t.GetInterfaces()))
-            .FirstOrDefault();
-
-    if (directInterface != null)
-    {
-        builder.Services.Add(new ServiceDescriptor(directInterface, concreteService, ServiceLifetime.Scoped));
-    }
-}
+builder.Services.DynamicRegisterRepositories();
 
 builder.Services.AddAutoMapper(typeof(PostInListDto));
 
@@ -85,6 +64,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "API for Administrators",
         Description = "API for CMS core domain"
     });
+    c.ParameterFilter<SwaggerNullableParameterFilter>();
 });
 
 var app = builder.Build();
