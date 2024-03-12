@@ -1,5 +1,6 @@
 using Blog.Api;
 using Blog.Core.Domain.Identity;
+using Blog.Core.Models.Content;
 using Blog.Core.Repositories;
 using Blog.Core.SeedWorks;
 using Blog.Data;
@@ -62,6 +63,8 @@ foreach (var concreteService in concreteServices)
         builder.Services.Add(new ServiceDescriptor(directInterface, concreteService, ServiceLifetime.Scoped));
     }
 }
+
+builder.Services.AddAutoMapper(typeof(PostInListDto).Assembly);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

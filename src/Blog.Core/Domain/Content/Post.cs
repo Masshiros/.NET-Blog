@@ -29,6 +29,7 @@ namespace Blog.Core.Domain.Content
         [MaxLength(128)]
         public string? Source { get; set; }
         public string? Tags { get; set; }
+        [MaxLength(160)]
         public string? SeoDescription { get; set; }
         public int ViewCount { get; set; }
         public DateTime DateCreated { get; set; }
