@@ -9,6 +9,9 @@ export const navItems: INavData[] = [
       color: 'info',
       text: 'NEW',
     },
+    attributes: {
+      policyName: 'Permissions.Dashboard.View',
+    },
   },
   {
     name: 'Content',
@@ -18,18 +21,30 @@ export const navItems: INavData[] = [
       {
         name: 'Categories',
         url: '/content/post-categories',
+        attributes: {
+          policyName: 'Permissions.PostCategories.View',
+        },
       },
       {
         name: 'Posts',
         url: '/content/posts',
+        attributes: {
+          policyName: 'Permissions.Posts.View',
+        },
       },
       {
         name: 'Series',
         url: '/content/series',
+        attributes: {
+          policyName: 'Permissions.Series.View',
+        },
       },
       {
         name: 'Royalties',
         url: '/content/royalty',
+        attributes: {
+          policyName: 'Permissions.Loyalty.View',
+        },
       },
     ],
   },
@@ -42,10 +57,16 @@ export const navItems: INavData[] = [
       {
         name: 'Permissions',
         url: '/system/roles',
+        attributes: {
+          policyName: 'Permissions.Roles.View',
+        },
       },
       {
         name: 'Users',
         url: '/system/users',
+        attributes: {
+          policyName: 'Permissions.Users.View',
+        },
       },
     ],
   },
