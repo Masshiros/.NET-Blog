@@ -16,7 +16,17 @@ using Blog.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
+var BlogCorsPolicy = "BlogCorsPolicy";
+builder.Services.AddCors(o => o.AddPolicy(BlogCorsPolicy, builderCors =>
+{
+    var origins = builder.Configuration["AllowOrigins"];
 
+    builderCors
+        .AllowAnyMethod()
+        .WithOrigins(origins!)
+        .AllowAnyHeader()
+        .AllowCredentials();
+}));
 
 // Config DbContext and ASP.net core Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
@@ -90,6 +100,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors(BlogCorsPolicy);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

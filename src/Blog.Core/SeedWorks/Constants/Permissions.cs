@@ -74,7 +74,7 @@ namespace Blog.Core.SeedWorks.Constants
             [Description("Delete Post")]
             public const string Delete = "Permissions.Posts.Delete";
 
-            [Description("Duyệt bài viết")]
+            [Description("Approve Post")]
             public const string Approve = "Permissions.Posts.Approve";
         }
 
