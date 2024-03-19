@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Api.Filters;
 using Blog.Core.Domain.Identity;
+using Blog.Core.Models;
 using Blog.Core.Models.System;
 using Blog.Core.SeedWorks.Constants;
 using Microsoft.AspNetCore.Authorization;
@@ -125,7 +126,7 @@ namespace Blog.Api.Controllers.AdminApi
         [HttpGet]
         [Route("paging")]
         [Authorize(Permissions.Roles.View)]
-        public async Task<ActionResult<PagedResult<RoleDto>>> GetAllRolesPaging(string? keyword,
+        public async Task<ActionResult<PageResult<RoleDto>>> GetAllRolesPaging(string? keyword,
                                                                                 int pageIndex = 1,
                                                                                 int pageSize = 10)
         {
@@ -147,7 +148,7 @@ namespace Blog.Api.Controllers.AdminApi
 
             var data = await _mapper.ProjectTo<RoleDto>(query).ToListAsync();
 
-            var response = new PagedResult<RoleDto>
+            var response = new PageResult<RoleDto>
             {
                 CurrentPage = pageIndex,
                 PageSize = pageSize,

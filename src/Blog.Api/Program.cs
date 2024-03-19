@@ -15,11 +15,15 @@ using Blog.Core.ConfigOptions;
 using Blog.Api.Services;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Blog.Api.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 var BlogCorsPolicy = "BlogCorsPolicy";
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddCors(o => o.AddPolicy(BlogCorsPolicy, builderCors =>
 {
     var origins = builder.Configuration["AllowOrigins"];
