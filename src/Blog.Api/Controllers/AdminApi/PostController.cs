@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Api.Controllers.AdminApi
 {
     [Route("api/admin/post")]
-    [ApiController]
+   
+    
     public class PostController : ControllerBase
     {
        private readonly IUnitOfWork _unitOfWork;

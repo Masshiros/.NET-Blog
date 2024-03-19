@@ -10,8 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 using Blog.Core.ConfigOptions;
 using Blog.Api.Services;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -52,6 +55,25 @@ builder.Services.Configure<IdentityOptions>(options =>
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 });
+// Config JWT Authentication
+builder.Services.AddAuthentication(o =>
+    {
+        o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(cfg =>
+    {
+        cfg.RequireHttpsMetadata = false;
+        cfg.SaveToken = true;
+
+        cfg.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = builder.Configuration["JwtTokenSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtTokenSettings:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtTokenSettings:Key"]!))
+        };
+    });
+
 // Add services to the container.
 builder.Services.AddScoped(typeof(IRepository<,>),typeof(BaseRepository<,>));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
@@ -103,6 +125,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(BlogCorsPolicy);
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
